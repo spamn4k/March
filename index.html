@@ -5,14 +5,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Квиз на 8 Марта</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Pearly Soft Gradient */
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            color: #1e293b;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #app {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #screen-container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 
-<body
-    style="background-color: #f8fafc; color: #0f172a; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-    <div id="app"
-        style="width: 100%; min-height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #f8fafc;">
-        <div id="screen-container" style="width: 100%; max-width: 900px; padding: 20px;">
-            <div id="loading" style="font-size: 2rem; text-align: center; color: #2563eb;">ЗАГРУЗКА...</div>
+<body>
+    <div id="app">
+        <div id="screen-container">
+            <div id="loading" style="font-family: Montserrat; font-weight: 900; color: #db2777;">ЗАГРУЗКА...</div>
         </div>
     </div>
     <script src="main.js"></script>
