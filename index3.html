@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мелодии праздника</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            color: #1e1b4b;
+            min-height: 100vh;
+            padding: 50px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 3.5rem;
+            margin-bottom: 60px;
+            text-align: center;
+            background: linear-gradient(135deg, #1e1b4b 0%, #db2777 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            /* Standard property */
+            -webkit-text-fill-color: transparent;
+        }
+
+        .audio-grid {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .song-item {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 20px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 0 15px rgba(100, 116, 139, 0.1);
+            filter: grayscale(0.8);
+            cursor: not-allowed;
+            transition: all 0.3s ease;
+        }
+
+        .song-item:hover {
+            box-shadow: 0 0 25px rgba(219, 39, 119, 0.2);
+            filter: grayscale(0.5);
+        }
+
+        .song-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .play-indicator {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 30%;
+            background: #db2777;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(219, 39, 119, 0.5);
+        }
+
+        .spoiler {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .spoiler-header {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .spoiler-content {
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-family: 'Montserrat';
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+
+        .spoiler.open .spoiler-content {
+            max-height: 100px;
+            padding: 10px 20px 20px 20px;
+            opacity: 1;
+        }
+
+        .duration {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            opacity: 0.6;
+            z-index: 10;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-link">← Квиз</a>
+
+    <h1>А что любят слушать наши девушки</h1>
+
+    <div class="audio-grid" id="songGrid">
+        <!-- Songs will be generated here -->
+    </div>
+
+    <script>
+        const songs = [
+            "Валерий Меладзе - Красиво",
+            "Валерий Меладзе - Салют, Вера",
+            "Валерий Меладзе - Притяженья больше нет",
+            "Валерий Меладзе - Океан и три реки",
+            "Валерий Меладзе - Небеса",
+            "Валерий Меладзе - Девушка из высшего общества",
+            "Валерий Меладзе - Тропикана-женщина",
+            "Валерий Меладзе - Сэра",
+            "Валерий Меладзе - Иностранец",
+            "Валерий Меладзе - Вопреки"
+        ];
+
+        const grid = document.getElementById('songGrid');
+
+        songs.forEach((song, index) => {
+            const item = document.createElement('div');
+            item.className = 'song-item';
+
+            item.innerHTML = `
+                <div class="song-controls">
+                    <div class="play-indicator">▶</div>
+                    <div class="progress-bar"></div>
+                    <div class="duration">00:15 / 00:15</div>
+                </div>
+                <div class="spoiler" onclick="this.classList.toggle('open'); event.stopPropagation();">
+                    <div class="spoiler-header">Открыть Автора - Песню</div>
+                    <div class="spoiler-content">${song}</div>
+                </div>
+            `;
+            grid.appendChild(item);
+        });
+    </script>
+</body>
+
+</html>
