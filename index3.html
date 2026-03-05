@@ -79,12 +79,19 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: #cbd5e1;
+            background: #db2777;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 1.2rem;
             color: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+            z-index: 10;
+        }
+
+        .play-indicator:hover {
+            transform: scale(1.1);
         }
 
         .progress-bar {
@@ -93,18 +100,19 @@
             background: #e2e8f0;
             border-radius: 10px;
             position: relative;
+            overflow: hidden;
         }
 
-        .progress-bar::after {
-            content: "";
+        .progress-fill {
             position: absolute;
             left: 0;
             top: 0;
             height: 100%;
-            width: 30%;
+            width: 0%;
             background: #db2777;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(219, 39, 119, 0.5);
+            transition: width 0.1s linear;
         }
 
         .spoiler {
@@ -220,7 +228,6 @@
     <h1>А что любят слушать наши девушки</h1>
 
     <div class="audio-grid" id="songGrid">
-        <!-- Songs will be generated here -->
     </div>
 
     <script>
@@ -237,7 +244,11 @@
             "Валерий Меладзе - Вопреки"
         ];
 
+        // Public placeholder audio URL (SoundHelix)
+        const placeholderUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
         const grid = document.getElementById('songGrid');
+        let currentAudio = null;
+        let currentIndicator = null;
 
         songs.forEach((song, index) => {
             const item = document.createElement('div');
@@ -245,17 +256,65 @@
 
             item.innerHTML = `
                 <div class="song-controls">
-                    <div class="play-indicator">▶</div>
-                    <div class="progress-bar"></div>
-                    <div class="duration">00:15 / 00:15</div>
+                    <div class="play-indicator" id="play-${index}" onclick="togglePlay(${index})">▶</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-${index}"></div>
+                    </div>
+                    <div class="duration" id="time-${index}">00:00 / 00:15</div>
                 </div>
+                <audio id="audio-${index}" src="${placeholderUrl}"></audio>
                 <div class="spoiler" onclick="this.classList.toggle('open'); event.stopPropagation();">
                     <div class="spoiler-header">Открыть Автора - Песню</div>
                     <div class="spoiler-content">${song}</div>
                 </div>
             `;
             grid.appendChild(item);
+
+            const audio = document.getElementById(`audio-${index}`);
+            const progress = document.getElementById(`progress-${index}`);
+            const time = document.getElementById(`time-${index}`);
+            const playBtn = document.getElementById(`play-${index}`);
+
+            audio.addEventListener('timeupdate', () => {
+                const perc = (audio.currentTime / 15) * 100;
+                progress.style.width = Math.min(perc, 100) + "%";
+                const curr = Math.floor(audio.currentTime);
+                time.innerText = `00:${curr < 10 ? '0' + curr : curr} / 00:15`;
+
+                // Stop at 15s
+                if (audio.currentTime >= 15) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    playBtn.innerText = "▶";
+                }
+            });
+
+            audio.addEventListener('ended', () => {
+                playBtn.innerText = "▶";
+                progress.style.width = "0%";
+            });
         });
+
+        function togglePlay(index) {
+            const audio = document.getElementById(`audio-${index}`);
+            const playBtn = document.getElementById(`play-${index}`);
+
+            if (currentAudio && currentAudio !== audio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                if (currentIndicator) currentIndicator.innerText = "▶";
+            }
+
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerText = "⏸";
+                currentAudio = audio;
+                currentIndicator = playBtn;
+            } else {
+                audio.pause();
+                playBtn.innerText = "▶";
+            }
+        }
     </script>
 </body>
 
