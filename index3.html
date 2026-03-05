@@ -306,9 +306,12 @@
             container.appendChild(card);
         });
 
-        function playSong(i) {
+        const blobCache = {};
+
+        async function playSong(i) {
             const audio = document.getElementById('audio-' + i);
             const btn = document.getElementById('btn-' + i);
+            const originalUrl = 'audio/song' + (i + 1) + '.mp3';
 
             // Stop previous
             if (currentAudio && currentAudio !== audio) {
@@ -318,12 +321,40 @@
                 document.getElementById('btn-' + currentIdx).textContent = '▶';
             }
 
-            if (audio.paused) {
-                audio.currentTime = 20 + Math.random() * 20;
-                audio.play().catch(e => console.error('Play error:', e));
-                btn.textContent = '⏸';
-                currentAudio = audio;
-                currentIdx = i;
+            if (audio.paused || btn.textContent === '▶') {
+                btn.textContent = '⌛'; // Indicate loading
+
+                // If not cached via Blob, fetch it to bypass Python server Range issues
+                if (!blobCache[originalUrl] && audio.src.includes(originalUrl)) {
+                    try {
+                        const response = await fetch(originalUrl);
+                        const blob = await response.blob();
+                        blobCache[originalUrl] = URL.createObjectURL(blob);
+                        audio.src = blobCache[originalUrl];
+                    } catch (e) {
+                        console.error('Fetch error:', e);
+                    }
+                }
+
+                let targetTime = 40 + Math.random() * 20;
+                const tryPlay = () => {
+                    audio.currentTime = targetTime;
+                    audio.play().catch(e => console.error('Play error:', e));
+                    btn.textContent = '⏸';
+                    currentAudio = audio;
+                    currentIdx = i;
+                };
+
+                if (audio.readyState >= 1) { // HAVE_METADATA or more
+                    tryPlay();
+                } else {
+                    audio.addEventListener('loadedmetadata', function onLoaded() {
+                        tryPlay();
+                        audio.removeEventListener('loadedmetadata', onLoaded);
+                    });
+                    // Force the audio to load metadata
+                    audio.load();
+                }
             } else {
                 audio.pause();
                 btn.textContent = '▶';

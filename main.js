@@ -47,7 +47,7 @@ document.head.appendChild(style);
 
 async function init() {
     try {
-        const response = await fetch('questions.json');
+        const response = await fetch('questions.json?t=' + Date.now());
         if (!response.ok) throw new Error('Load failed');
         state.questions = await response.json();
         render();
@@ -160,8 +160,10 @@ function render() {
         } else if (state.currentScreen === 'answer') {
             let isSpecial = q.id === 13;
             let content = isSpecial ? `<img src="pointing_finger.png" style="width: 280px; margin-bottom: 40px; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));">` : `<div style="font-family: Montserrat; color: ${isSpecial ? '#ffffff' : '#db2777'}; text-transform: uppercase; margin-bottom: 25px; font-weight: 700; letter-spacing: 5px;">Верный Ответ</div>`;
+            let answerImg = q.answerImage && !isSpecial ? `<img src="${q.answerImage}" style="max-width: 100%; max-height: 450px; border-radius: 30px; margin-bottom: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">` : '';
             container.innerHTML = `
                 ${content}
+                ${answerImg}
                 <div style="font-family: 'Playfair Display'; font-size: 3.5rem; margin-bottom: 60px; font-weight: 700; line-height: 1.2;">${q.answer}</div>
                 <button onclick="backToGrid()" class="hover-scale" style="background: ${isSpecial ? '#ffffff' : '#1e1b4b'}; color: ${isSpecial ? '#be185d' : 'white'}; border: none; padding: 20px 60px; font-size: 1.2rem; font-family: Montserrat; font-weight: 700; border-radius: 100px; cursor: pointer; text-transform: uppercase; letter-spacing: 3px;">Назад к Сетке</button>
             `;
