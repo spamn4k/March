@@ -77,6 +77,9 @@ function render() {
             <button onclick="goToGrid()" class="hover-scale" style="background: #db2777; color: white; border: none; padding: 24px 80px; font-size: 1.5rem; font-family: 'Montserrat', sans-serif; font-weight: 800; border-radius: 100px; cursor: pointer; box-shadow: 0 15px 30px rgba(219, 39, 119, 0.3); text-transform: uppercase; letter-spacing: 3px; position: relative; overflow: hidden;">
                 Начать Праздник
             </button>
+            <div style="margin-top: 30px;">
+                <a href="index2.html" style="color: #64748b; font-family: Montserrat; font-size: 0.8rem; text-decoration: none; opacity: 0.4; letter-spacing: 1px;">ПЕРЕЙТИ К ОСОБОМУ РАЗДЕЛУ</a>
+            </div>
         `;
     } else if (state.currentScreen === 'grid') {
         screenDiv.innerHTML = `<h2 style="font-family: 'Montserrat', sans-serif; text-align:center; color: #1e1b4b; text-transform: uppercase; letter-spacing: 5px; font-weight: 900; margin-bottom: 50px; font-size: 1.8rem; border-bottom: 2px solid #fecdd3; display: inline-block; padding-bottom: 10px; left: 50%; transform: translateX(-50%); position: relative;">Выберите Вопрос</h2>`;
