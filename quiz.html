@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Праздничный Квиз - 8 Марта</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            color: #1e293b;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #app {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #screen-container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page {
+            animation: fadeIn 0.8s ease-out forwards;
+            width: 100%;
+            text-align: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 15px 35px rgba(219, 39, 119, 0.08);
+            border-radius: 40px;
+            padding: 50px;
+        }
+
+        .btn {
+            background: #db2777;
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-family: Montserrat;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .grid-item {
+            background: white;
+            border-radius: 20px;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            font-family: Montserrat;
+            cursor: pointer;
+            border: 1px solid #fce7f3;
+        }
+
+        .grid-item.disabled {
+            opacity: 0.2;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <a href="index.html" style="position:fixed; top:20px; left:20px; text-decoration:none; color:#666;">← Назад</a>
+        <div id="screen-container">
+            <div id="loading" style="font-family: Montserrat; font-weight: 900; color: #db2777;">ЗАГРУЗКА...</div>
+        </div>
+    </div>
+
+    <script>
+        const state = {
+            currentScreen: 'grid',
+            selectedQuestion: null,
+            disabledQuestions: new Set(),
+            questions: []
+        };
+        const app = document.getElementById('screen-container');
+
+        async function init() {
+            try {
+                const res = await fetch('questions.json');
+                state.questions = await res.json();
+                render();
+            } catch (e) {
+                app.innerHTML = `<h1 style="color:red">ERROR LOADING JSON</h1>`;
+            }
+        }
+
+        function render() {
+            app.innerHTML = '';
+            const page = document.createElement('div');
+            page.className = 'page';
+
+            if (state.currentScreen === 'grid') {
+                page.innerHTML = `
+                    <h1 style="font-family: Montserrat; font-weight: 900; color: #1e1b4b; letter-spacing: 5px; text-transform: uppercase;">Выберите Вопрос</h1>
+                    <div class="grid" id="grid"></div>
+                `;
+                const grid = page.querySelector('#grid');
+                for (let i = 1; i <= 25; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'grid-item' + (state.disabledQuestions.has(i) ? ' disabled' : '');
+                    item.innerText = i;
+                    if (!state.disabledQuestions.has(i)) {
+                        item.onclick = () => { selectQuestion(i); };
+                    }
+                    grid.appendChild(item);
+                }
+            } else {
+                const q = state.selectedQuestion;
+                page.innerHTML = `
+                    <div class="card">
+                        <p style="font-family: Montserrat; color: #db2777; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 3px;">${q.topic}</p>
+                        <h2 style="font-family: 'Playfair Display'; font-size: 3rem; margin-bottom: 40px; font-weight: 700;">
+                            ${state.currentScreen === 'topic' ? q.topic : (state.currentScreen === 'question' ? q.question : q.answer)}
+                        </h2>
+                        ${state.currentScreen === 'question' && q.image && q.id !== 13 ? `<img src="${q.image}" style="max-width: 100%; border-radius: 20px; margin-bottom: 20px;">` : ''}
+                        ${state.currentScreen === 'answer' && q.id === 13 ? `<img src="pointing_finger.png" style="width: 200px; margin-bottom: 20px;">` : ''}
+                        <div style="margin-top: 20px;">
+                            ${state.currentScreen === 'topic' ? `<button onclick="state.currentScreen='question'; render()" class="btn">Открыть Вопрос</button>` : ''}
+                            ${state.currentScreen === 'question' ? `<button onclick="state.currentScreen='answer'; render()" class="btn">Показать Ответ</button>` : ''}
+                            ${state.currentScreen === 'answer' ? `<button onclick="backToGrid()" class="btn">Назад к Сетке</button>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            app.appendChild(page);
+        }
+
+        function selectQuestion(id) {
+            state.selectedQuestion = state.questions.find(q => q.id === id);
+            state.currentScreen = 'topic';
+            render();
+        }
+
+        function backToGrid() {
+            state.disabledQuestions.add(state.selectedQuestion.id);
+            state.currentScreen = 'grid';
+            render();
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

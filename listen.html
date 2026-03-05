@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Мелодии праздника (Meladze)</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #1e293b;
+            font-family: sans-serif;
+            padding: 40px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #db2777;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .song {
+            border: 2px solid #fce7f3;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .spoiler {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+            cursor: help;
+        }
+
+        .spoiler-text {
+            color: #64748b;
+            font-weight: bold;
+            display: none;
+        }
+
+        .back {
+            display: block;
+            margin-bottom: 20px;
+            color: #64748b;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back">← На главную</a>
+    <h1>Мелодии праздника</h1>
+    <p style="text-align:center; color: #666; margin-bottom: 30px;">
+        Положите файлы в папку <b>audio/</b> с названиями <b>song1.mp3</b>, <b>song2.mp3</b> и т.д.
+    </p>
+
+    <!-- Song 1 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song1.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">Валерий Меладзе — Красиво</div>
+        </div>
+    </div>
+
+    <!-- Song 2 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song2.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">ВИА ГРА — Бриллианты</div>
+        </div>
+    </div>
+
+    <!-- Song 3 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song3.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">Валерий Меладзе — Салют, Вера</div>
+        </div>
+    </div>
+
+    <!-- Song 4 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song4.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">ВИА ГРА - Лучик Мой Любимый</div>
+        </div>
+    </div>
+
+    <!-- Song 5 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song5.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">Валерий Меладзе — Притяженья больше нет</div>
+        </div>
+    </div>
+
+    <!-- Song 6 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song6.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">ВИА ГРА - Не оставляй меня, любимый!</div>
+        </div>
+    </div>
+
+    <!-- Song 7 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song7.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">Валерий Меладзе — Сэра</div>
+        </div>
+    </div>
+
+    <!-- Song 8 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song8.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">Serebro - Мама Люба</div>
+        </div>
+    </div>
+
+    <!-- Song 9 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song9.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">Валерий Меладзе — Иностранец</div>
+        </div>
+    </div>
+
+    <!-- Song 10 -->
+    <div class="song">
+        <div class="controls">
+            <audio controls src="audio/song10.mp3" style="width: 100%;"></audio>
+        </div>
+        <div class="spoiler"
+            onclick="this.querySelector('.spoiler-text').style.display='block'; this.querySelector('span').style.display='none';">
+            <span>[ Нажмите, чтобы узнать название ]</span>
+            <div class="spoiler-text">Кровосток - Куртец</div>
+        </div>
+    </div>
+
+</body>
+
+</html>

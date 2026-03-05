@@ -2,11 +2,7 @@ const state = {
     currentScreen: 'intro',
     selectedQuestion: null,
     disabledQuestions: new Set(),
-    questions: [],
-    audioState: {
-        currentIdx: null,
-        playerIdx: null
-    }
+    questions: []
 };
 
 const appContainer = document.getElementById('screen-container');
@@ -41,18 +37,10 @@ style.innerHTML = `
         z-index: -1;
         animation: rotate-slow 20s linear infinite;
     }
-    @keyframes glitch {
-        0% { transform: translate(0); }
-        20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
-        40% { transform: translate(2px, -2px); filter: contrast(2); }
-        60% { transform: translate(-2px, -2px); filter: saturate(5); }
-        80% { transform: translate(2px, 2px); filter: invert(0.2); }
-        100% { transform: translate(0); }
-    }
-    .melad-spoiler:hover {
-        animation: glitch 0.2s infinite;
-        background: #fff1f2 !important;
-        border-color: #f43f5e !important;
+    s {
+        text-decoration: line-through;
+        color: #94a3b8;
+        font-style: normal;
     }
 `;
 document.head.appendChild(style);
@@ -68,19 +56,6 @@ async function init() {
     }
 }
 
-const meladzeSongs = [
-    "Валерий Меладзе - Красиво",
-    "Валерий Меладзе - Салют, Вера",
-    "Валерий Меладзе - Притяженья больше нет",
-    "Валерий Меладзе - Океан и три реки",
-    "Валерий Меладзе - Небеса",
-    "Валерий Меладзе - Девушка из высшего общества",
-    "Валерий Меладзе - Тропикана-женщина",
-    "Валерий Меладзе - Сэра",
-    "Валерий Меладзе - Иностранец",
-    "Валерий Меладзе - Вопреки"
-];
-
 function render() {
     appContainer.innerHTML = '';
 
@@ -93,6 +68,7 @@ function render() {
         screenDiv.style.textAlign = 'center';
         screenDiv.style.padding = '40px';
         screenDiv.innerHTML = `
+            <!-- Decorative Elements -->
             <div class="flower-icon" style="top: -50px; left: -50px; font-size: 15rem;">🌸</div>
             <div class="flower-icon" style="bottom: -50px; right: -50px; font-size: 12rem; animation-direction: reverse;">🌺</div>
             
@@ -107,66 +83,21 @@ function render() {
                 Начать Праздник
             </button>
             <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                <a href="index3.html" style="color: #64748b; font-family: Montserrat; font-size: 0.8rem; text-decoration: none; opacity: 0.4; letter-spacing: 1px;">МЕЛОДИИ ПРАЗДНИКА</a>
+                <a href="index4.html" style="color: #64748b; font-family: Montserrat; font-size: 0.8rem; text-decoration: none; opacity: 0.4; letter-spacing: 1px;">ПОХИТИТЕЛЬНИЦЫ АРОМАТОВ</a>
                 <a href="index2.html" style="color: #64748b; font-family: Montserrat; font-size: 0.8rem; text-decoration: none; opacity: 0.4; letter-spacing: 1px;">ПЕРЕЙТИ К ОСОБОМУ РАЗДЕЛУ</a>
-                <a href="javascript:void(0)" onclick="goToMelodies()" style="color: #64748b; font-family: Montserrat; font-size: 0.8rem; text-decoration: none; opacity: 0.4; letter-spacing: 1px;">МЕЛОДИИ ПРАЗДНИКА</a>
+                <a href="index5.html" style="color: #64748b; font-family: Montserrat; font-size: 0.8rem; text-decoration: none; opacity: 0.4; letter-spacing: 1px;">ТЗ ДЛЯ ТОСТА</a>
             </div>
         `;
-    } else if (state.currentScreen === 'melodies') {
-        screenDiv.innerHTML = `
-            <button onclick="goToIntro()" style="position: absolute; top: 0; left: 0; background: white; border: 1px solid #ddd; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-family: Montserrat; font-weight: 700; color: #666;">← Назад</button>
-            <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; text-align: center; color: #1e1b4b; margin-bottom: 50px; font-style: italic;">А что любят слушать наши девушки</h1>
-            <div id="songs-list" style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px;"></div>
-        `;
-        const list = screenDiv.querySelector('#songs-list');
-        meladzeSongs.forEach((song, i) => {
-            const card = document.createElement('div');
-            card.className = 'premium-card';
-            card.style.padding = '20px';
-            card.style.borderRadius = '20px';
-            card.style.display = 'flex';
-            card.style.flexDirection = 'column';
-            card.style.gap = '15px';
-            card.style.filter = 'grayscale(0.6)';
-            card.style.transition = 'all 0.3s';
-
-            card.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <button id="p-btn-${i}" onclick="playSong(${i})" style="background: #db2777; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">▶</button>
-                    <div style="flex: 1; height: 6px; background: #eee; border-radius: 10px; overflow: hidden; position: relative;">
-                        <div id="p-bar-${i}" style="height: 100%; width: 0%; background: #db2777; transition: width 0.1s linear;"></div>
-                    </div>
-                    <span id="p-time-${i}" style="font-family: Montserrat; font-size: 0.8rem; color: #64748b; width: 40px;">00:00</span>
-                </div>
-                <div id="sp-container-${i}" class="melad-spoiler" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px; text-align: center; cursor: pointer;" onclick="toggleSpoiler(${i})">
-                    <span style="font-family: Montserrat; font-size: 0.8rem; text-transform: uppercase; color: #64748b; letter-spacing: 1px; font-weight: 700;">Узнать Автора - Песню</span>
-                    <div id="sp-text-${i}" style="display: none; margin-top: 10px; font-family: Montserrat; font-weight: 800; font-size: 1.1rem; color: #1e1b4b;">${song}</div>
-                </div>
-                <audio id="p-audio-${i}" src="./audio/song${i + 1}.mp3"></audio>
-            `;
-            list.appendChild(card);
-
-            const audio = card.querySelector(`#p-audio-${i}`);
-            audio.ontimeupdate = () => {
-                const bar = card.querySelector(`#p-bar-${i}`);
-                const time = card.querySelector(`#p-time-${i}`);
-                bar.style.width = (audio.currentTime / 15 * 100) + '%';
-                time.innerText = '00:' + Math.floor(audio.currentTime).toString().padStart(2, '0');
-                if (audio.currentTime >= 15) {
-                    audio.pause();
-                    audio.currentTime = 0;
-                    card.querySelector(`#p-btn-${i}`).innerText = '▶';
-                }
-            };
-            audio.onplay = () => { card.style.filter = 'grayscale(0)'; };
-            audio.onpause = () => { card.style.filter = 'grayscale(0.6)'; };
-        });
     } else if (state.currentScreen === 'grid') {
         screenDiv.innerHTML = `<h2 style="font-family: 'Montserrat', sans-serif; text-align:center; color: #1e1b4b; text-transform: uppercase; letter-spacing: 5px; font-weight: 900; margin-bottom: 50px; font-size: 1.8rem; border-bottom: 2px solid #fecdd3; display: inline-block; padding-bottom: 10px; left: 50%; transform: translateX(-50%); position: relative;">Выберите Вопрос</h2>`;
+
         const grid = document.createElement('div');
         grid.style.display = 'grid';
         grid.style.gridTemplateColumns = 'repeat(5, 1fr)';
         grid.style.gap = '25px';
         grid.style.marginTop = '20px';
+
         for (let i = 1; i <= 25; i++) {
             const sq = document.createElement('div');
             sq.className = 'premium-card hover-scale';
@@ -180,6 +111,7 @@ function render() {
             sq.style.fontFamily = 'Montserrat';
             sq.style.borderRadius = '28px';
             sq.style.cursor = 'pointer';
+
             if (state.disabledQuestions.has(i)) {
                 sq.style.background = '#f8fafc';
                 sq.style.color = '#e2e8f0';
@@ -204,11 +136,13 @@ function render() {
         container.style.textAlign = 'center';
         container.style.maxWidth = '900px';
         container.style.margin = '0 auto';
+
         if (state.currentScreen === 'answer' && q.id === 13) {
             container.style.background = 'linear-gradient(135deg, #be185d, #db2777)';
             container.style.color = '#ffffff';
             container.style.boxShadow = '0 30px 60px rgba(190, 24, 93, 0.4)';
         }
+
         if (state.currentScreen === 'topic') {
             container.innerHTML = `
                 <div style="font-family: Montserrat; color: #db2777; text-transform: uppercase; margin-bottom: 25px; font-weight: 700; letter-spacing: 5px;">Раздел</div>
@@ -234,12 +168,11 @@ function render() {
         }
         screenDiv.appendChild(container);
     }
+
     appContainer.appendChild(screenDiv);
 }
 
 window.goToGrid = () => { state.currentScreen = 'grid'; render(); };
-window.goToIntro = () => { state.currentScreen = 'intro'; render(); };
-window.goToMelodies = () => { state.currentScreen = 'melodies'; render(); };
 window.selectQuestion = (id) => {
     state.selectedQuestion = state.questions.find(q => q.id === id);
     if (state.selectedQuestion) {
@@ -253,28 +186,6 @@ window.backToGrid = () => {
     state.disabledQuestions.add(state.selectedQuestion.id);
     state.currentScreen = 'grid';
     render();
-};
-window.playSong = (i) => {
-    const audio = document.getElementById(`p-audio-${i}`);
-    const btn = document.getElementById(`p-btn-${i}`);
-    if (state.currentAudio && state.currentAudio !== audio) {
-        state.currentAudio.pause();
-        state.currentAudio.currentTime = 0;
-        document.getElementById(`p-btn-${state.currentPlayerIdx}`).innerText = '▶';
-    }
-    if (audio.paused) {
-        audio.play();
-        btn.innerText = '⏸';
-        state.currentAudio = audio;
-        state.currentPlayerIdx = i;
-    } else {
-        audio.pause();
-        btn.innerText = '▶';
-    }
-};
-window.toggleSpoiler = (i) => {
-    const text = document.getElementById(`sp-text-${i}`);
-    text.style.display = text.style.display === 'block' ? 'none' : 'block';
 };
 
 init();

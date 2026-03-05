@@ -1,99 +1,336 @@
 <!DOCTYPE html>
-<html lang="ru" style="color-scheme: light;">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мелодии праздника</title>
+    <!-- Premium Fonts (same as index.html) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Pearly Soft Gradient — same as index.html */
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            color: #1e293b;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 80px 20px 60px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        /* Back button */
+        .back-btn {
+            position: fixed;
+            top: 22px;
+            left: 22px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 10px 22px;
+            border-radius: 100px;
+            text-decoration: none;
+            color: #64748b;
+            font-family: Montserrat, sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            color: #db2777;
+            box-shadow: 0 8px 20px rgba(219, 39, 119, 0.12);
+        }
+
+        /* Page heading */
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-style: italic;
+            color: #1e1b4b;
+            text-align: center;
+            margin-bottom: 10px;
+            line-height: 1.15;
+            /* Gradient text — same as "Весенний Квиз" */
+            background: linear-gradient(135deg, #1e1b4b 0%, #be185d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-subtitle {
+            font-family: Montserrat, sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 500;
+        }
+
+        /* Song card — same glass card style as .premium-card in main.js */
+        .song-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            padding: 22px 26px;
+            margin-bottom: 18px;
+            box-shadow: 0 15px 35px rgba(219, 39, 119, 0.06);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .song-card:hover {
+            box-shadow: 0 20px 45px rgba(219, 39, 119, 0.12);
+            transform: translateY(-2px);
+        }
+
+        /* Play button */
+        .play-btn {
+            background: #db2777;
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 6px 16px rgba(219, 39, 119, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 24px rgba(219, 39, 119, 0.45);
+        }
+
+        /* Progress bar */
+        .bar-bg {
+            flex: 1;
+            height: 5px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #db2777, #be185d);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+
+        /* Spoiler */
+        .spoiler {
+            margin-top: 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 10px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.25s, background 0.25s;
+        }
+
+        .spoiler:hover {
+            border-color: #fecdd3;
+            background: #fff1f2;
+        }
+
+        .spoiler-hint {
+            font-family: Montserrat, sans-serif;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .spoiler-name {
+            display: none;
+            margin-top: 8px;
+            font-family: Montserrat, sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #1e1b4b;
+        }
+
+        /* Decorative fade-in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            animation: fadeIn 0.7s ease-out forwards;
+        }
+    </style>
 </head>
 
-<body style="background-color: #ffffff; color: #000000; margin: 0; padding: 40px; font-family: sans-serif;">
+<body>
+    <a href="index.html" class="back-btn">← Назад к квизу</a>
 
-    <div style="max-width: 600px; margin: 0 auto; text-align: center;">
-        <a href="index.html"
-            style="color: blue; text-decoration: underline; font-size: 14px; display: block; margin-bottom: 20px;">назад
-            к квизу</a>
-
-        <h1 style="font-size: 24px; margin-bottom: 30px;">А ЧТО ЛЮБЯТ СЛУШАТЬ НАШИ ДЕВУШКИ</h1>
-
+    <div class="container">
+        <h1 class="page-title">Мелодии праздника</h1>
+        <p class="page-subtitle">Угадайте, что любят слушать наши девушки</p>
         <div id="songs-list"></div>
     </div>
 
     <script>
-        const songsList = [
-            "Валерий Меладзе - Красиво",
-            "Валерий Меладзе - Салют, Вера",
-            "Валерий Меладзе - Притяженья больше нет",
-            "Валерий Меладзе - Океан и три реки",
-            "Валерий Меладзе - Небеса",
-            "Валерий Меладзе - Девушка из высшего общества",
-            "Валерий Меладзе - Тропикана-женщина",
-            "Валерий Меладзе - Сэра",
-            "Валерий Меладзе - Иностранец",
-            "Валерий Меладзе - Вопреки"
+        const songs = [
+            "Валерий Меладзе — Красиво", // 1
+
+            "ВИА ГРА — Бриллианты", // 2        
+
+            "Валерий Меладзе — Салют, Вера", // 3
+
+            "ВИА ГРА - Лучик Мой Любимый", // 4
+
+            "Валерий Меладзе — Притяженья больше нет",  // 5
+
+            "ВИА ГРА - Не оставляй меня, любимый!", // 6
+
+            "Валерий Меладзе — Сэра", // 7  
+
+            "Serebro - Мама Люба", // 8
+
+            "Валерий Меладзе — Иностранец", // 9
+
+            "Кровосток - Куртец" // 10
+
+
+
+
+            // "Валерий Меладзе — Океан и три реки",
+            // "Валерий Меладзе — Небеса",
+            // "Валерий Меладзе — Девушка из высшего общества",
+            // "Валерий Меладзе — Тропикана-женщина",
+            // "Валерий Меладзе — Вопреки"
         ];
 
-        const placeholder = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
         const container = document.getElementById('songs-list');
         let currentAudio = null;
-        let currentBtn = null;
+        let currentIdx = null;
 
-        songsList.forEach((song, i) => {
+        songs.forEach((song, i) => {
             const card = document.createElement('div');
-            card.style.border = "1px solid #ccc";
-            card.style.borderRadius = "8px";
-            card.style.padding = "15px";
-            card.style.marginBottom = "15px";
-            card.style.textAlign = "left";
-            card.style.backgroundColor = "#f9f9f9";
+            card.className = 'song-card';
 
-            card.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <button id="btn-${i}" style="padding: 8px 16px; cursor: pointer; background: #333; color: white; border: none; border-radius: 4px;" onclick="playSong(${i})">PLAY</button>
-                    <div style="flex: 1; height: 8px; background: #ddd; border-radius: 4px; overflow: hidden;">
-                        <div id="bar-${i}" style="height: 100%; background: red; width: 0%;"></div>
-                    </div>
-                    <span id="time-${i}" style="font-size: 12px;">00:00</span>
-                </div>
-                <div style="border-top: 1px solid #eee; padding-top: 10px;">
-                    <button style="font-size: 11px; padding: 4px 8px; cursor: pointer;" onclick="document.getElementById('text-${i}').style.display = (document.getElementById('text-${i}').style.display === 'block' ? 'none' : 'block')">УЗНАТЬ НАЗВАНИЕ</button>
-                    <div id="text-${i}" style="display: none; margin-top: 8px; font-weight: bold; font-size: 16px; color: black;">${song}</div>
-                </div>
-                <audio id="audio-${i}" src="${placeholder}"></audio>
-            `;
-            container.appendChild(card);
+            // Player row
+            const playerRow = document.createElement('div');
+            playerRow.style.cssText = 'display:flex; align-items:center; gap:18px;';
 
-            const audio = document.getElementById('audio-' + i);
+            const btn = document.createElement('button');
+            btn.id = 'btn-' + i;
+            btn.className = 'play-btn';
+            btn.textContent = '▶';
+            btn.onclick = () => playSong(i);
+
+            const barBg = document.createElement('div');
+            barBg.className = 'bar-bg';
+            const barFill = document.createElement('div');
+            barFill.id = 'bar-' + i;
+            barFill.className = 'bar-fill';
+            barBg.appendChild(barFill);
+
+            // Song number label
+            const numLabel = document.createElement('span');
+            numLabel.style.cssText = 'font-family: Montserrat; font-size: 0.7rem; color: #cbd5e1; font-weight: 700; width: 20px; text-align: right;';
+            numLabel.textContent = (i + 1).toString().padStart(2, '0');
+
+            playerRow.appendChild(btn);
+            playerRow.appendChild(barBg);
+            playerRow.appendChild(numLabel);
+
+            // Spoiler
+            const spoiler = document.createElement('div');
+            spoiler.className = 'spoiler';
+            const hint = document.createElement('div');
+            hint.className = 'spoiler-hint';
+            hint.textContent = 'Узнать автора и песню';
+            const name = document.createElement('div');
+            name.id = 'name-' + i;
+            name.className = 'spoiler-name';
+            name.textContent = song;
+            spoiler.appendChild(hint);
+            spoiler.appendChild(name);
+            spoiler.onclick = () => {
+                name.style.display = 'block';
+                hint.style.display = 'none';
+            };
+
+            // Audio
+            const audio = document.createElement('audio');
+            audio.id = 'audio-' + i;
+            audio.src = 'audio/song' + (i + 1) + '.mp3';
             audio.ontimeupdate = () => {
-                const bar = document.getElementById('bar-' + i);
-                const time = document.getElementById('time-' + i);
-                bar.style.width = (audio.currentTime / 15 * 100) + '%';
-                time.innerText = '00:' + Math.floor(audio.currentTime).toString().padStart(2, '0');
-                if (audio.currentTime >= 15) {
-                    audio.pause();
-                    audio.currentTime = 0;
-                    document.getElementById('btn-' + i).innerText = 'PLAY';
+                if (audio.duration) {
+                    const pct = (audio.currentTime / audio.duration) * 100;
+                    barFill.style.width = pct + '%';
                 }
             };
+            audio.onended = () => { btn.textContent = '▶'; };
+
+            card.appendChild(playerRow);
+            card.appendChild(spoiler);
+            card.appendChild(audio);
+            container.appendChild(card);
         });
 
-        window.playSong = (i) => {
+        function playSong(i) {
             const audio = document.getElementById('audio-' + i);
             const btn = document.getElementById('btn-' + i);
+
+            // Stop previous
             if (currentAudio && currentAudio !== audio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
-                currentBtn.innerText = 'PLAY';
+                document.getElementById('bar-' + currentIdx).style.width = '0%';
+                document.getElementById('btn-' + currentIdx).textContent = '▶';
             }
+
             if (audio.paused) {
-                audio.play();
-                btn.innerText = 'PAUSE';
+                audio.currentTime = 20 + Math.random() * 20;
+                audio.play().catch(e => console.error('Play error:', e));
+                btn.textContent = '⏸';
                 currentAudio = audio;
-                currentBtn = btn;
+                currentIdx = i;
             } else {
                 audio.pause();
-                btn.innerText = 'PLAY';
+                btn.textContent = '▶';
+                currentAudio = null;
+                currentIdx = null;
             }
-        };
+        }
     </script>
 </body>
 

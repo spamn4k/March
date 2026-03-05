@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техническое задание для тоста</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 20px 60px;
+        }
+
+        .page {
+            max-width: 720px;
+            width: 100%;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Label */
+        .label {
+            font-family: Montserrat, sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #db2777;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            color: #1e1b4b;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        /* Main card */
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            border-radius: 28px;
+            padding: 40px 44px;
+            box-shadow: 0 15px 40px rgba(219, 39, 119, 0.07);
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            font-size: 1.08rem;
+            line-height: 1.9;
+            color: #334155;
+            font-weight: 300;
+        }
+
+        .card p+p {
+            margin-top: 20px;
+        }
+
+        .card strong {
+            color: #1e1b4b;
+            font-weight: 600;
+        }
+
+        /* Spoiler */
+        .spoiler {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px dashed #fca5a5;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .spoiler-header {
+            padding: 18px 28px;
+            font-family: Montserrat, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #f43f5e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            user-select: none;
+        }
+
+        .spoiler-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            padding: 0 28px;
+            font-size: 1rem;
+            color: #475569;
+            line-height: 1.8;
+            font-weight: 300;
+            border-top: 0px solid #fecdd3;
+        }
+
+        .spoiler.open .spoiler-content {
+            max-height: 200px;
+            padding: 20px 28px;
+            border-top: 1px solid #fecdd3;
+        }
+
+        .spoiler-header .arrow {
+            transition: transform 0.3s;
+            display: inline-block;
+        }
+
+        .spoiler.open .arrow {
+            transform: rotate(90deg);
+        }
+
+        /* Back */
+        .back-btn {
+            position: fixed;
+            top: 22px;
+            left: 22px;
+            text-decoration: none;
+            color: #94a3b8;
+            font-family: Montserrat, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .back-btn:hover {
+            color: #db2777;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-btn">← Назад</a>
+
+    <div class="page">
+        <div class="label">Документ особой важности</div>
+        <h1>Техническое задание<br>для тоста</h1>
+
+        <div class="card">
+            <p>
+                <strong>НиколайGPT</strong>, прошу вас придумать тост для поздравления наших прекрасных дам.
+                В тексте хотелось бы подчеркнуть не только красоту их ножек, но и то что они умеют думать головой —
+                обязательно упомяните эти качества в каком-либо виде.
+            </p>
+            <p>
+                Отдельно хотелось бы добавить в тост лёгкую, ненавязчивую мысль: возможно, в форме небольшой истории
+                или образной метафоры, — о том, что забывать поздравлять мужчин с праздником всё-таки
+                по-<strong>СВИНСКИ</strong>,
+                прошу обыграйте эту мысль с присущей вам иронией в тексте.
+            </p>
+            <p>
+                При создании тоста можно опираться на уже услышанные тосты.
+            </p>
+        </div>
+
+        <div class="spoiler" onclick="this.classList.toggle('open')">
+            <div class="spoiler-header">
+                <span class="arrow">▶</span>
+                Прочитать только после выполнения тоста
+            </div>
+            <div class="spoiler-content">
+                Если вы всё сделаете правильно — никто не пострадает за 13-й вопрос. 😇
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

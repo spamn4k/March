@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конкурс ароматов</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 30px;
+        }
+
+        .emoji {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            color: #1e1b4b;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        p {
+            font-size: 1.25rem;
+            color: #475569;
+            line-height: 1.9;
+            max-width: 560px;
+            font-weight: 300;
+        }
+
+        p strong {
+            color: #1e1b4b;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 22px;
+            left: 22px;
+            text-decoration: none;
+            color: #94a3b8;
+            font-family: Montserrat, sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .back-btn:hover {
+            color: #db2777;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-btn">← Назад</a>
+
+    <div class="emoji">🌸</div>
+
+    <h1>Похитительницы ароматов</h1>
+
+    <p>
+        Каждой команде дают пробники парфюма.<br><br>
+        💅 <strong>Сначала девушки пробуют женские ароматы</strong> и пытаются
+        сопоставить их с названием или брендом, записывая свой вариант.<br><br>
+        🤵 <strong>Парни в это время пробуют мужские ароматы</strong> и тоже
+        сопоставляют их с ароматом или маркой, записывая ответ.<br><br>
+        После этого участники меняются пробниками
+        и пробуют определить ароматы противоположной категории.<br><br>
+        Каждое правильное совпадение — <strong>+1 балл команде</strong>.
+    </p>
+</body>
+
+</html>
