@@ -1,237 +1,25 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" style="color-scheme: light;">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мелодии праздника</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600&display=swap"
-        rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
-            color: #1e1b4b;
-            min-height: 100vh;
-            padding: 50px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 3.5rem;
-            margin-bottom: 60px;
-            text-align: center;
-            background: linear-gradient(135deg, #1e1b4b 0%, #db2777 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            /* Standard property */
-            -webkit-text-fill-color: transparent;
-        }
-
-        .audio-grid {
-            width: 100%;
-            max-width: 900px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        .song-item {
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            padding: 20px 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            box-shadow: 0 0 15px rgba(100, 116, 139, 0.1);
-            filter: grayscale(0.8);
-            cursor: not-allowed;
-            transition: all 0.3s ease;
-        }
-
-        .song-item:hover {
-            box-shadow: 0 0 25px rgba(219, 39, 119, 0.2);
-            filter: grayscale(0.5);
-        }
-
-        .song-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .play-indicator {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #db2777;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            color: white;
-            cursor: pointer;
-            transition: transform 0.2s;
-            z-index: 10;
-        }
-
-        .play-indicator:hover {
-            transform: scale(1.1);
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 4px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 0%;
-            background: #db2777;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(219, 39, 119, 0.5);
-            transition: width 0.1s linear;
-        }
-
-        .spoiler {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .spoiler-header {
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .spoiler-content {
-            max-height: 0;
-            opacity: 0;
-            transition: all 0.3s ease;
-            text-align: center;
-            font-family: 'Montserrat';
-            font-weight: 700;
-            color: #1e1b4b;
-        }
-
-        .spoiler.open .spoiler-content {
-            max-height: 100px;
-            padding: 10px 20px 20px 20px;
-            opacity: 1;
-        }
-
-        /* Distortion Logic */
-        @keyframes glitch {
-            0% {
-                transform: translate(0) skew(0deg);
-                filter: hue-rotate(0deg) contrast(1);
-            }
-
-            10% {
-                transform: translate(-5px, 2px) skew(5deg);
-                filter: hue-rotate(90deg) contrast(2);
-            }
-
-            20% {
-                transform: translate(5px, -2px) skew(-5deg);
-                filter: hue-rotate(180deg) saturate(5);
-            }
-
-            30% {
-                transform: translate(-2px, 5px) skew(2deg);
-                filter: invert(0.5);
-            }
-
-            40% {
-                transform: translate(2px, -5px) skew(-2deg);
-                filter: hue-rotate(270deg) contrast(3);
-            }
-
-            50% {
-                transform: translate(-5px, -5px) skew(10deg);
-                filter: blur(2px);
-            }
-
-            100% {
-                transform: translate(0) skew(0deg);
-                filter: hue-rotate(360deg) contrast(1);
-            }
-        }
-
-        .spoiler.open:hover {
-            animation: glitch 0.15s infinite linear;
-            background: rgba(255, 0, 0, 0.1);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
-            border: 2px solid #ff0000;
-        }
-
-        .spoiler.open:hover .spoiler-content {
-            color: #ff0000;
-            text-shadow: 2px 2px #000, -2px -2px #fff;
-        }
-
-        .duration {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            font-weight: 600;
-        }
-
-        .back-link {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            color: #64748b;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            opacity: 0.6;
-            z-index: 10;
-        }
-
-        .back-link:hover {
-            opacity: 1;
-        }
-    </style>
 </head>
 
-<body>
-    <a href="index.html" class="back-link">← Квиз</a>
+<body style="background-color: #ffffff; color: #000000; margin: 0; padding: 40px; font-family: sans-serif;">
 
-    <h1>А что любят слушать наши девушки</h1>
+    <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+        <a href="index.html"
+            style="color: blue; text-decoration: underline; font-size: 14px; display: block; margin-bottom: 20px;">назад
+            к квизу</a>
 
-    <div class="audio-grid" id="songGrid">
+        <h1 style="font-size: 24px; margin-bottom: 30px;">А ЧТО ЛЮБЯТ СЛУШАТЬ НАШИ ДЕВУШКИ</h1>
+
+        <div id="songs-list"></div>
     </div>
 
     <script>
-        const songs = [
+        const songsList = [
             "Валерий Меладзе - Красиво",
             "Валерий Меладзе - Салют, Вера",
             "Валерий Меладзе - Притяженья больше нет",
@@ -244,77 +32,68 @@
             "Валерий Меладзе - Вопреки"
         ];
 
-        // Public placeholder audio URL (SoundHelix)
-        const placeholderUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-        const grid = document.getElementById('songGrid');
+        const placeholder = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+        const container = document.getElementById('songs-list');
         let currentAudio = null;
-        let currentIndicator = null;
+        let currentBtn = null;
 
-        songs.forEach((song, index) => {
-            const item = document.createElement('div');
-            item.className = 'song-item';
+        songsList.forEach((song, i) => {
+            const card = document.createElement('div');
+            card.style.border = "1px solid #ccc";
+            card.style.borderRadius = "8px";
+            card.style.padding = "15px";
+            card.style.marginBottom = "15px";
+            card.style.textAlign = "left";
+            card.style.backgroundColor = "#f9f9f9";
 
-            item.innerHTML = `
-                <div class="song-controls">
-                    <div class="play-indicator" id="play-${index}" onclick="togglePlay(${index})">▶</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress-${index}"></div>
+            card.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <button id="btn-${i}" style="padding: 8px 16px; cursor: pointer; background: #333; color: white; border: none; border-radius: 4px;" onclick="playSong(${i})">PLAY</button>
+                    <div style="flex: 1; height: 8px; background: #ddd; border-radius: 4px; overflow: hidden;">
+                        <div id="bar-${i}" style="height: 100%; background: red; width: 0%;"></div>
                     </div>
-                    <div class="duration" id="time-${index}">00:00 / 00:15</div>
+                    <span id="time-${i}" style="font-size: 12px;">00:00</span>
                 </div>
-                <audio id="audio-${index}" src="${placeholderUrl}"></audio>
-                <div class="spoiler" onclick="this.classList.toggle('open'); event.stopPropagation();">
-                    <div class="spoiler-header">Открыть Автора - Песню</div>
-                    <div class="spoiler-content">${song}</div>
+                <div style="border-top: 1px solid #eee; padding-top: 10px;">
+                    <button style="font-size: 11px; padding: 4px 8px; cursor: pointer;" onclick="document.getElementById('text-${i}').style.display = (document.getElementById('text-${i}').style.display === 'block' ? 'none' : 'block')">УЗНАТЬ НАЗВАНИЕ</button>
+                    <div id="text-${i}" style="display: none; margin-top: 8px; font-weight: bold; font-size: 16px; color: black;">${song}</div>
                 </div>
+                <audio id="audio-${i}" src="${placeholder}"></audio>
             `;
-            grid.appendChild(item);
+            container.appendChild(card);
 
-            const audio = document.getElementById(`audio-${index}`);
-            const progress = document.getElementById(`progress-${index}`);
-            const time = document.getElementById(`time-${index}`);
-            const playBtn = document.getElementById(`play-${index}`);
-
-            audio.addEventListener('timeupdate', () => {
-                const perc = (audio.currentTime / 15) * 100;
-                progress.style.width = Math.min(perc, 100) + "%";
-                const curr = Math.floor(audio.currentTime);
-                time.innerText = `00:${curr < 10 ? '0' + curr : curr} / 00:15`;
-
-                // Stop at 15s
+            const audio = document.getElementById('audio-' + i);
+            audio.ontimeupdate = () => {
+                const bar = document.getElementById('bar-' + i);
+                const time = document.getElementById('time-' + i);
+                bar.style.width = (audio.currentTime / 15 * 100) + '%';
+                time.innerText = '00:' + Math.floor(audio.currentTime).toString().padStart(2, '0');
                 if (audio.currentTime >= 15) {
                     audio.pause();
                     audio.currentTime = 0;
-                    playBtn.innerText = "▶";
+                    document.getElementById('btn-' + i).innerText = 'PLAY';
                 }
-            });
-
-            audio.addEventListener('ended', () => {
-                playBtn.innerText = "▶";
-                progress.style.width = "0%";
-            });
+            };
         });
 
-        function togglePlay(index) {
-            const audio = document.getElementById(`audio-${index}`);
-            const playBtn = document.getElementById(`play-${index}`);
-
+        window.playSong = (i) => {
+            const audio = document.getElementById('audio-' + i);
+            const btn = document.getElementById('btn-' + i);
             if (currentAudio && currentAudio !== audio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
-                if (currentIndicator) currentIndicator.innerText = "▶";
+                currentBtn.innerText = 'PLAY';
             }
-
             if (audio.paused) {
                 audio.play();
-                playBtn.innerText = "⏸";
+                btn.innerText = 'PAUSE';
                 currentAudio = audio;
-                currentIndicator = playBtn;
+                currentBtn = btn;
             } else {
                 audio.pause();
-                playBtn.innerText = "▶";
+                btn.innerText = 'PLAY';
             }
-        }
+        };
     </script>
 </body>
 
