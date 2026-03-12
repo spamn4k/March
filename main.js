@@ -101,14 +101,19 @@ function render() {
         for (let i = 1; i <= 25; i++) {
             const sq = document.createElement('div');
             sq.className = 'premium-card hover-scale';
-            sq.innerText = i;
+
+            const q = state.questions.find(item => item.id === i);
+            const topic = q ? q.topic : '';
+
+            sq.innerHTML = `<div style="text-align:center; padding: 10px;">
+                <div style="font-size: 2.4rem; font-weight: 900; font-family: Montserrat; line-height: 1;">${i}</div>
+                ${topic ? `<div style="font-size: 0.75rem; font-weight: 600; font-family: Montserrat; text-transform: uppercase; margin-top: 8px; color: inherit; opacity: 0.7; letter-spacing: 1px;">${topic}</div>` : ''}
+            </div>`;
+
             sq.style.aspectRatio = '1';
             sq.style.display = 'flex';
             sq.style.justifyContent = 'center';
             sq.style.alignItems = 'center';
-            sq.style.fontSize = '2.4rem';
-            sq.style.fontWeight = '900';
-            sq.style.fontFamily = 'Montserrat';
             sq.style.borderRadius = '28px';
             sq.style.cursor = 'pointer';
 
